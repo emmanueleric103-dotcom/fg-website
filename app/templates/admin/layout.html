@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}Admin - FG (HefGe){% endblock %}</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="admin">
+<div class="admin-layout">
+  <aside class="sidebar">
+    <div class="logo" style="display:flex;align-items:center;gap:10px;font-family:'Space Grotesk';font-weight:700;font-size:1.2rem">
+      <span style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#00d4ff,#00ffc6);display:grid;place-items:center;color:#001018;font-weight:800">FG</span> Admin
+    </div>
+    <nav class="side-nav">
+      <a href="/admin/" class="{{ 'active' if request.path=='/admin/' }}">📊 Overview</a>
+      <a href="/admin/analytics" class="{{ 'active' if request.path.startswith('/admin/analytics') }}">📈 Analytics</a>
+      <a href="/admin/services" class="{{ 'active' if request.path.startswith('/admin/services') }}">🛠️ Services</a>
+      <a href="/admin/projects" class="{{ 'active' if request.path.startswith('/admin/projects') }}">📁 Projects</a>
+      <a href="/admin/contacts" class="{{ 'active' if request.path.startswith('/admin/contacts') }}">✉️ Messages {% if stats %}{% set new_count = stats.recent_contacts|selectattr('status','equalto','new')|list|length %}{% if new_count>0 %}<span class="badge badge-new">{{ new_count }}</span>{% endif %}{% endif %}</a>
+      <a href="/admin/settings" class="{{ 'active' if request.path.startswith('/admin/settings') }}">⚙️ Settings</a>
+      <div style="margin-top:12px;border-top:1px solid #1d2a50;padding-top:12px">
+        <a href="/" target="_blank">🌐 View site</a>
+        <a href="/admin/logout">🚪 Logout</a>
+      </div>
+    </nav>
+    <div style="margin-top:20px;padding:12px;background:rgba(0,212,255,0.06);border-radius:10px;border:1px solid rgba(0,212,255,0.12)">
+      <div style="font-size:0.8rem;color:#8a94b8">Logged in as</div>
+      <div style="font-weight:600;font-size:0.9rem">{{ session.admin_username }}</div>
+    </div>
+  </aside>
+  <main class="main">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for cat, msg in messages %}
+          <div style="padding:10px 14px;border-radius:10px;margin-bottom:14px;background:rgba(0,255,198,0.1);border:1px solid rgba(0,255,198,0.2);color:#7affde">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</div>
+{% block scripts %}{% endblock %}
+</body>
+</html>
