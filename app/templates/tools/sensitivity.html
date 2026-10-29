@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+{% block title %}Free Fire Sensitivity Generator + Ratings - SensiLab by FG (HefGe){% endblock %}
+{% block meta_desc %}Generate perfect Free Fire sensitivity for Infinix, Tecno, Samsung, Xiaomi, iPhone. Rate settings and see what others say.{% endblock %}
+{% block head %}
+<style>
+.sensi-hero{background: radial-gradient(1200px 600px at 20% -10%, rgba(0,212,255,0.18), transparent 60%), radial-gradient(800px 400px at 90% 0%, rgba(0,255,198,0.15), transparent 60%), linear-gradient(180deg, #0a0f1f 0%, #070a14 100%); padding:64px 0 32px; border-bottom:1px solid rgba(255,255,255,0.06);}
+.sensi-badge{display:inline-flex;align-items:center;gap:8px;background: rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.2); color:#00d4ff; padding:6px 12px; border-radius:999px; font-size:0.78rem; font-weight:600; text-transform:uppercase;}
+.sensi-title{font-family:'Space Grotesk',sans-serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight:700; line-height:1.05; margin:18px 0 14px; background: linear-gradient(100deg, #fff 0%, #a5f3fc 45%, #00d4ff 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
+.sensi-sub{color:#9ca3af; max-width:68ch; font-size:1.05rem; line-height:1.6;}
+.sensi-grid{display:grid; grid-template-columns:1.05fr 0.95fr; gap:28px; margin-top:32px;}
+@media(max-width:960px){.sensi-grid{grid-template-columns:1fr;}}
+.card-dark{background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); backdrop-filter: blur(12px); border-radius:18px; padding:22px;}
+.card-dark h3{font-family:'Space Grotesk'; font-size:1.15rem; margin:0 0 14px; color:#e5e7eb;}
+.label{font-size:0.82rem; color:#9ca3af; font-weight:600; letter-spacing:0.03em; text-transform:uppercase; margin-bottom:6px; display:block;}
+.select,.input,.textarea{width:100%; background:#0f1426; border:1px solid rgba(255,255,255,0.1); color:#e5e7eb; border-radius:12px; padding:12px 14px; font-size:0.95rem; outline:none;}
+.textarea{min-height:90px; resize:vertical;}
+.select:focus,.input:focus,.textarea:focus{border-color:#00d4ff;}
+.row3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px;}
+@media(max-width:600px){.row3{grid-template-columns:1fr;}}
+.btn-generate{width:100%; background: linear-gradient(100deg, #00d4ff, #00ffc6); color:#031018; border:none; padding:14px 18px; border-radius:14px; font-weight:800; font-family:'Space Grotesk'; font-size:1.05rem; cursor:pointer;}
+.result-card{background: linear-gradient(180deg, rgba(0,212,255,0.08), rgba(255,255,255,0.02)); border:1px solid rgba(0,212,255,0.18); border-radius:18px; padding:20px;}
+.sensi-item{display:flex; justify-content:space-between; align-items:center; padding:11px 0; border-bottom:1px solid rgba(255,255,255,0.06);}
+.sensi-item span:first-child{color:#9ca3af; font-size:0.9rem;}
+.sensi-item b{font-family:'Space Grotesk'; font-size:1.15rem; color:#fff;}
+.sensi-item .copy{background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:#cbd5e1; border-radius:8px; padding:4px 8px; font-size:0.75rem; cursor:pointer;}
+.badge-tier{display:inline-flex; padding:4px 10px; border-radius:999px; font-size:0.72rem; font-weight:700; text-transform:uppercase;}
+.tier-low{background:rgba(239,68,68,0.15); color:#fca5a5;}
+.tier-mid{background:rgba(234,179,8,0.15); color:#fde68a;}
+.tier-high{background:rgba(34,197,94,0.15); color:#86efac;}
+.tip{background:rgba(255,255,255,0.03); border-left:3px solid #00d4ff; padding:10px 12px; border-radius:8px; margin:8px 0; font-size:0.9rem; color:#cbd5e1;}
+.old-scale{font-size:0.8rem; color:#6b7280; margin-left:8px;}
+.stars{display:flex; gap:6px; margin:8px 0;}
+.star{font-size:1.9rem; cursor:pointer; color:#374151;}
+.star.active{color:#fbbf24;}
+.review-item{background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:14px; margin:10px 0;}
+.review-head{display:flex; justify-content:space-between; align-items:center;}
+.review-stars{color:#fbbf24;}
+</style>
+{% endblock %}
+{% block content %}
+<section class="sensi-hero">
+  <div class="container">
+    <div class="sensi-badge">● Live • Ratings • iPhone Fixed</div>
+    <h1 class="sensi-title">Free Fire Sensitivity Generator — SensiLab</h1>
+    <p class="sensi-sub">iPhone now uses <b style="color:#e5e7eb">model not RAM</b> — Android still uses RAM. Rate your sensitivity. <span style="color:#00ffc6">★ {{ avg_rating }}/5 from {{ rating_count }} ratings</span></p>
+    <div class="sensi-grid">
+      <div class="card-dark">
+        <h3>🎮 Your Setup</h3>
+        <div style="margin-bottom:14px"><label class="label">Phone Brand</label>
+          <select id="brand" class="select">
+            <option value="infinix_smart">Infinix Smart / Tecno Spark</option>
+            <option value="infinix_hot" selected>Infinix Hot / Tecno Camon</option>
+            <option value="tecno_spark">Tecno Spark Series</option>
+            <option value="tecno_camon">Tecno Camon Series</option>
+            <option value="itel">Itel</option>
+            <option value="samsung">Samsung A/M</option>
+            <option value="xiaomi">Xiaomi / Redmi / Poco</option>
+            <option value="realme">Realme / Oppo / Vivo</option>
+            <option value="iphone">iPhone - Select Model</option>
+            <option value="others">Other Android</option>
+          </select>
+        </div>
+        <div id="ramWrapper" style="margin-bottom:14px"><label class="label">RAM (Android Only)</label>
+          <select id="ram" class="select">
+            <option value="2">2GB RAM - Very Low</option><option value="3">3GB RAM - Low</option><option value="4" selected>4GB RAM - Mid</option><option value="6">6GB RAM - Good</option><option value="8">8GB RAM - High</option><option value="12">12GB+ - Flagship</option>
+          </select>
+        </div>
+        <div id="iphoneWrapper" style="margin-bottom:14px; display:none"><label class="label">iPhone Model (iOS - No RAM)</label>
+          <select id="iphoneModel" class="select">
+            <option value="iphone_7_8_se">iPhone 7 / 8 / SE 2020 - Low</option>
+            <option value="iphone_x_xr_11">iPhone X / XR / 11 - Mid-Low</option>
+            <option value="iphone_12_mini">iPhone 12 Mini / 12 - Mid</option>
+            <option value="iphone_12_13_14" selected>iPhone 12 / 13 / 14 - Good</option>
+            <option value="iphone_14pro_15">iPhone 14 Pro / 15 / 15 Pro - High</option>
+            <option value="iphone_15promax_16">iPhone 15 Pro Max / 16 Pro Max - Flagship</option>
+          </select>
+          <div style="font-size:0.75rem; color:#00d4ff; margin-top:4px">✔ Fixed: iPhone uses chip, not RAM. 120Hz ProMotion</div>
+        </div>
+        <div class="row3" style="margin-bottom:14px">
+          <div><label class="label">Finger</label><select id="playstyle" class="select"><option value="2">2 Finger</option><option value="3" selected>3 Finger</option><option value="4">4 Finger Pro</option></select></div>
+          <div><label class="label">Gyro</label><select id="gyro" class="select"><option value="none" selected>No Gyro</option><option value="scope_only">Scope Only</option><option value="always">Always On</option></select></div>
+          <div><label class="label">Role</label><select id="role" class="select"><option value="rusher" selected>Rusher</option><option value="balanced">Balanced</option><option value="sniper">Sniper</option><option value="support">Support</option></select></div>
+        </div>
+        <div style="margin-bottom:18px"><label class="label">Experience</label><select id="experience" class="select"><option value="beginner">Beginner</option><option value="intermediate" selected>Intermediate</option><option value="pro">Pro</option></select></div>
+        <button id="genBtn" class="btn-generate">⚡ Generate My Sensitivity</button>
+      </div>
+      <div>
+        <div id="resultBox" class="result-card" style="display:none">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px"><h3 style="margin:0">🎯 Your Settings</h3><span id="tierBadge" class="badge-tier tier-mid">Mid-Range</span></div>
+          <div id="genFor" style="font-size:0.8rem; color:#9ca3af; margin-bottom:12px"></div>
+          <div class="sensi-item"><span>General <span class="old-scale" id="old_general"></span></span><div><b id="v_general">185</b> <button class="copy" onclick="copyVal('v_general')">Copy</button></div></div>
+          <div class="sensi-item"><span>Red Dot <span class="old-scale" id="old_red"></span></span><div><b id="v_red">175</b> <button class="copy" onclick="copyVal('v_red')">Copy</button></div></div>
+          <div class="sensi-item"><span>2x Scope <span class="old-scale" id="old_2x"></span></span><div><b id="v_2x">155</b> <button class="copy" onclick="copyVal('v_2x')">Copy</button></div></div>
+          <div class="sensi-item"><span>4x Scope <span class="old-scale" id="old_4x"></span></span><div><b id="v_4x">135</b> <button class="copy" onclick="copyVal('v_4x')">Copy</button></div></div>
+          <div class="sensi-item"><span>Sniper <span class="old-scale" id="old_sniper"></span></span><div><b id="v_sniper">90</b> <button class="copy" onclick="copyVal('v_sniper')">Copy</button></div></div>
+          <div class="sensi-item"><span>Free Look</span><div><b id="v_free">140</b> <button class="copy" onclick="copyVal('v_free')">Copy</button></div></div>
+          <div style="margin-top:16px; display:grid; grid-template-columns:1fr 1fr; gap:10px">
+            <div style="background:rgba(255,255,255,0.04); border-radius:10px; padding:10px; text-align:center"><div style="font-size:0.75rem; color:#9ca3af">DPI</div><div style="font-weight:700; font-size:1.2rem; color:#00ffc6" id="v_dpi">400</div><div style="font-size:0.7rem; color:#6b7280" id="dpiLabel">Android</div></div>
+            <div style="background:rgba(255,255,255,0.04); border-radius:10px; padding:10px; text-align:center"><div style="font-size:0.75rem; color:#9ca3af">FIRE BUTTON</div><div style="font-weight:700; font-size:1.2rem; color:#00d4ff" id="v_fire">48%</div></div>
+          </div>
+          <div style="margin-top:16px"><div style="font-size:0.85rem; font-weight:700; color:#e5e7eb; margin-bottom:6px">📱 Device Note</div><div id="brandNote" class="tip"></div></div>
+        </div>
+        <div id="rateBox" class="card-dark" style="margin-top:16px; display:none; border-color: rgba(251,191,36,0.25);">
+          <h3>⭐ Rate This Sensitivity</h3>
+          <div class="stars" id="starRow"><span class="star" data-r="1">★</span><span class="star" data-r="2">★</span><span class="star" data-r="3">★</span><span class="star" data-r="4">★</span><span class="star" data-r="5">★</span></div>
+          <div style="font-size:0.85rem; color:#fbbf24; margin-bottom:10px" id="ratingText">Tap to rate</div>
+          <label class="label">Your Name (optional)</label><input id="authorName" class="input" placeholder="e.g. Eric, Lagos" style="margin-bottom:10px">
+          <label class="label">Comment</label><textarea id="comment" class="textarea" placeholder="Did it give headshots?"></textarea>
+          <button id="submitRating" class="btn-generate" style="margin-top:12px; background: linear-gradient(100deg, #fbbf24, #f59e0b); color:#000">Submit Rating ★</button>
+          <div id="rateMsg" style="margin-top:10px; font-size:0.9rem"></div>
+        </div>
+        <div id="hudBox" class="card-dark" style="margin-top:16px; display:none"><h3 id="hudTitle">🖐️ HUD</h3><p id="hudLayout" style="color:#cbd5e1; font-size:0.92rem; margin:8px 0"></p><div id="hudFire" style="color:#00d4ff; font-weight:700"></div><div id="hudTips"></div></div>
+        <div id="tipsBox" class="card-dark" style="margin-top:16px; display:none"><h3>🔥 Training Tips</h3><div id="tipsList"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section style="padding:28px 0 64px; background:#070a14">
+  <div class="container">
+    <div class="card-dark">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px">
+        <h3 style="margin:0">💬 Community Ratings ({{ rating_count }}) — Avg {{ avg_rating }}/5</h3>
+        <button id="refreshReviews" class="copy" style="padding:8px 12px">↻ Refresh</button>
+      </div>
+      <div id="reviewsList" style="margin-top:16px">
+        {% if reviews %}
+          {% for r in reviews %}
+            <div class="review-item">
+              <div class="review-head"><div><b style="color:#e5e7eb">{{ r.author_name or 'Anonymous' }}</b> <span style="font-size:0.8rem; color:#6b7280">{{ r.brand }} {% if r.iphone_model %}{{ r.iphone_model }}{% else %}{{ r.ram }}GB{% endif %} | {{ r.playstyle }}F</span></div><div class="review-stars">{{ '★' * r.rating }}{{ '☆' * (5 - r.rating) }}</div></div>
+              {% if r.comment %}<div style="color:#cbd5e1; font-size:0.9rem; margin:6px 0">{{ r.comment }}</div>{% endif %}
+              <div style="font-size:0.8rem; color:#6b7280">G:{{ r.general }} R:{{ r.red_dot }} • {{ r.created_at.strftime('%Y-%m-%d') if r.created_at else '' }}</div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div style="color:#6b7280; text-align:center; padding:24px">No ratings yet — be first! ⭐</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+let currentRes=null; let selectedRating=0;
+function copyVal(id){ const el=document.getElementById(id); navigator.clipboard.writeText(el.innerText).then(()=>{ const b=el.nextElementSibling; const o=b.innerText; b.innerText='Copied!'; setTimeout(()=>b.innerText=o,1200); }); }
+function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
+function updateBrandUI(){
+  const brand=document.getElementById('brand').value;
+  const ramW=document.getElementById('ramWrapper'); const iphoneW=document.getElementById('iphoneWrapper');
+  if(brand==='iphone'){ ramW.style.display='none'; iphoneW.style.display='block'; document.getElementById('dpiLabel').innerText='iOS Auto'; }
+  else{ ramW.style.display='block'; iphoneW.style.display='none'; document.getElementById('dpiLabel').innerText='Android DPI'; }
+}
+document.getElementById('brand').addEventListener('change', updateBrandUI); updateBrandUI();
+function generate(){
+  const brand=document.getElementById('brand').value;
+  const ram=parseInt(document.getElementById('ram').value||'4');
+  const iphoneModel=document.getElementById('iphoneModel').value;
+  const playstyle=parseInt(document.getElementById('playstyle').value);
+  const gyro=document.getElementById('gyro').value;
+  const role=document.getElementById('role').value;
+  const exp=document.getElementById('experience').value;
+  const iphoneMap={'iphone_7_8_se':2,'iphone_x_xr_11':3,'iphone_12_mini':4,'iphone_12_13_14':6,'iphone_14pro_15':6,'iphone_15promax_16':8};
+  let effectiveRam=ram; if(brand==='iphone' && iphoneMap[iphoneModel]) effectiveRam=iphoneMap[iphoneModel];
+  let res={general:185, red_dot:175, scope_2x:155, scope_4x:135, sniper:90, free_look:140, dpi:400, fire_button:48};
+  const ramAdj={2:{general:12,red_dot:8,scope_2x:-12,scope_4x:-18,sniper:-12,free_look:-5,dpi:25},3:{general:6,red_dot:4,scope_2x:-6,scope_4x:-10,sniper:-6,dpi:12},4:{},6:{general:-5,red_dot:-3,scope_2x:5,scope_4x:8,sniper:5,free_look:3,dpi:-10},8:{general:-8,red_dot:-6,scope_2x:10,scope_4x:14,sniper:10,dpi:-18},12:{general:-12,red_dot:-10,scope_2x:14,scope_4x:18,sniper:14,dpi:-28}};
+  const brandAdj={infinix_smart:{general:14,red_dot:12,scope_2x:-4,dpi:-5},tecno_spark:{general:14,red_dot:12,scope_2x:-4,dpi:-5},itel:{general:16,red_dot:14,scope_2x:-6,dpi:-10},infinix_hot:{general:7,red_dot:6,scope_2x:2,dpi:5},tecno_camon:{general:7,red_dot:6,scope_2x:2,dpi:5},samsung:{general:-4,red_dot:-3,scope_2x:2,sniper:3,dpi:8},xiaomi:{general:-3,red_dot:-3,scope_2x:3},realme:{general:-2,red_dot:-2,dpi:2},iphone:{general:-10,red_dot:-10,scope_2x:-6,scope_4x:-4,sniper:-8,dpi:-15},others:{}};
+  const playAdj={2:{general:-14,red_dot:-10,free_look:-12,fire_button:54},3:{fire_button:46},4:{general:10,red_dot:8,free_look:14,fire_button:43}};
+  const gyroAdj={none:{},always:{general:-18,red_dot:-18,scope_2x:-18,scope_4x:-18,sniper:-22},scope_only:{scope_4x:-10,sniper:-18}};
+  const roleAdj={rusher:{general:12,red_dot:12,scope_2x:10,scope_4x:-8,sniper:-18,free_look:12},balanced:{},sniper:{general:-12,red_dot:-10,scope_2x:-8,scope_4x:8,sniper:-24,free_look:-8},support:{general:-6,red_dot:-6,scope_2x:6,scope_4x:12,free_look:8}};
+  const expAdj={beginner:{general:-22,red_dot:-18,scope_2x:-18,scope_4x:-18,sniper:-14,free_look:-12},intermediate:{},pro:{general:12,red_dot:10,scope_2x:10,scope_4x:6,sniper:-6,free_look:6}};
+  [ramAdj[effectiveRam]||{}, brandAdj[brand]||{}, playAdj[playstyle]||{}, gyroAdj[gyro]||{}, roleAdj[role]||{}, expAdj[exp]||{}].forEach(adj=>{ Object.keys(adj).forEach(k=>{ if(res[k]!==undefined && k!=='fire_button') res[k]+=adj[k]; }); });
+  if(playstyle===2) res.fire_button=effectiveRam<=3?56:54; else if(playstyle===4) res.fire_button=43; else res.fire_button=46;
+  res.general=clamp(res.general,85,200); res.red_dot=clamp(res.red_dot,80,200); res.scope_2x=clamp(res.scope_2x,60,190); res.scope_4x=clamp(res.scope_4x,50,185); res.sniper=clamp(res.sniper,20,120); res.free_look=clamp(res.free_look,60,200); res.dpi=clamp(res.dpi,360,480);
+  const old={general:Math.floor(res.general/2), red:Math.floor(res.red_dot/2), _2x:Math.floor(res.scope_2x/2), _4x:Math.floor(res.scope_4x/2), sniper:Math.floor(res.sniper/2)};
+  document.getElementById('v_general').innerText=res.general; document.getElementById('v_red').innerText=res.red_dot; document.getElementById('v_2x').innerText=res.scope_2x; document.getElementById('v_4x').innerText=res.scope_4x; document.getElementById('v_sniper').innerText=res.sniper; document.getElementById('v_free').innerText=res.free_look; document.getElementById('v_dpi').innerText=res.dpi; document.getElementById('v_fire').innerText=res.fire_button+'%';
+  document.getElementById('old_general').innerText=`(old ${old.general})`; document.getElementById('old_red').innerText=`(old ${old.red})`; document.getElementById('old_2x').innerText=`(old ${old._2x})`; document.getElementById('old_4x').innerText=`(old ${old._4x})`; document.getElementById('old_sniper').innerText=`(old ${old.sniper})`;
+  const tier=brand==='iphone'?(effectiveRam<=2?'Low-End':effectiveRam<=4?'Mid-Range':effectiveRam>=8?'High-End':'Mid-High'):(effectiveRam<=3||['itel','infinix_smart','tecno_spark'].includes(brand)?'Low-End':effectiveRam>=8?'High-End':'Mid-Range');
+  const badge=document.getElementById('tierBadge'); badge.innerText=tier; badge.className='badge-tier '+(tier==='Low-End'?'tier-low':tier==='High-End'?'tier-high':'tier-mid');
+  const iphoneNames={'iphone_7_8_se':'iPhone 7/8/SE','iphone_x_xr_11':'iPhone X/XR/11','iphone_12_mini':'iPhone 12 Mini','iphone_12_13_14':'iPhone 12/13/14','iphone_14pro_15':'iPhone 14 Pro/15','iphone_15promax_16':'iPhone 15 Pro Max/16 Pro Max'};
+  let genFor=brand==='iphone'?`${iphoneNames[iphoneModel]||iphoneModel} | ${playstyle} finger | ${role} | ${exp}`:`${brand} | ${ram}GB RAM | ${playstyle} finger | ${role} | ${exp}`;
+  document.getElementById('genFor').innerText=`Generated for: ${genFor}`;
+  const brandNotes={infinix_smart:'Infinix Smart / Tecno Spark - Touch low, DPI 380-410.',tecno_spark:'Tecno Spark - DPI 380-410.',itel:'Itel - Very low touch, DPI 360-400 max.',infinix_hot:'Infinix Hot / Camon - DPI 400-440 best.',tecno_camon:'Tecno Camon - DPI 400-440 best.',samsung:'Samsung - 180Hz touch.',xiaomi:'Xiaomi/Redmi - Good response.',iphone:'iPhone - 120Hz ProMotion, no DPI needed. Fixed: uses model not RAM.',others:'Generic Android - DPI 400 safe.'};
+  document.getElementById('brandNote').innerText=brandNotes[brand]||brandNotes['others'];
+  const hudData={2:{title:'2-Finger Thumb', layout:'Both thumbs. Movement left, aim+fire right.', fire:`${res.fire_button}%`, tips:['Keep scope/fire separated','52-56% fire']},3:{title:'3-Finger Claw - Best for Naija', layout:'Left thumb move, right thumb aim, LEFT INDEX fire top-left.', fire:`Left ${res.fire_button}% top-left | Right 48%`, tips:['Left fire 46% top-left','Gloo near left thumb']},4:{title:'4-Finger Claw - Pro', layout:'Left thumb move, left index fire, right thumb aim, right index jump/scope.', fire:`${res.fire_button}% small`, tips:['1 week to master','42-46% fire']}};
+  const hud=hudData[playstyle]; document.getElementById('hudTitle').innerText='🖐️ '+hud.title; document.getElementById('hudLayout').innerText=hud.layout; document.getElementById('hudFire').innerText=hud.fire; document.getElementById('hudTips').innerHTML=hud.tips.map(t=>`<div class="tip">• ${t}</div>`).join('');
+  const roleTips={rusher:['Jump+shot drags in Training','50 Red Dot daily'],sniper:['20 sniper one-shots','Free Look + Sniper'],balanced:['30 mins daily: 10 close,10 mid,10 long'],support:['4x tracking','Gloo speed > aim']};
+  document.getElementById('tipsList').innerHTML=(roleTips[role]||roleTips['balanced']).map(t=>`<div class="tip">• ${t}</div>`).join('');
+  currentRes={brand, ram: effectiveRam, iphone_model: brand==='iphone'?iphoneModel:'', playstyle, gyro, role, experience:exp, general:res.general, red_dot:res.red_dot, scope_2x:res.scope_2x, scope_4x:res.scope_4x, sniper:res.sniper, free_look:res.free_look, dpi:res.dpi};
+  document.getElementById('resultBox').style.display='block'; document.getElementById('rateBox').style.display='block'; document.getElementById('hudBox').style.display='block'; document.getElementById('tipsBox').style.display='block'; document.getElementById('resultBox').scrollIntoView({behavior:'smooth'});
+}
+document.querySelectorAll('.star').forEach(star=>{ star.addEventListener('click', ()=>{ selectedRating=parseInt(star.dataset.r); document.querySelectorAll('.star').forEach((s,i)=>{ s.classList.toggle('active', i<selectedRating); }); document.getElementById('ratingText').innerText=['','Poor','Fair','Good','Very Good','Excellent'][selectedRating]+` (${selectedRating}/5)`; }); });
+document.getElementById('submitRating').addEventListener('click', async ()=>{
+  if(!currentRes){ alert('Generate first'); return; } if(selectedRating===0){ alert('Tap stars'); return; }
+  const btn=document.getElementById('submitRating'); btn.disabled=true; btn.innerText='Submitting...';
+  try{
+    const resp=await fetch('/api/sensitivity/rate', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({...currentRes, rating:selectedRating, comment:document.getElementById('comment').value, author_name:document.getElementById('authorName').value})});
+    const j=await resp.json();
+    if(j.ok){ document.getElementById('rateMsg').innerHTML=`<span style="color:#86efac">✔ ${j.message}</span>`; setTimeout(()=>{ loadReviews(); }, 1000); } else { document.getElementById('rateMsg').innerHTML=`<span style="color:#fca5a5">✖ ${j.error}</span>`; }
+  }catch(e){ document.getElementById('rateMsg').innerText='Network error'; }
+  btn.disabled=false; btn.innerText='Submit Rating ★';
+});
+async function loadReviews(){
+  try{
+    const resp=await fetch('/api/sensitivity/reviews'); const j=await resp.json();
+    if(j.ok){
+      const list=document.getElementById('reviewsList');
+      if(j.reviews.length===0){ list.innerHTML='<div style="color:#6b7280; text-align:center; padding:24px">No ratings yet — be first!</div>'; return; }
+      list.innerHTML=j.reviews.map(r=>`<div class="review-item"><div class="review-head"><div><b style="color:#e5e7eb">${r.author_name}</b> <span style="font-size:0.8rem; color:#6b7280">${r.brand} ${r.iphone_model||r.ram+'GB'} | ${r.playstyle}F</span></div><div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div></div>${r.comment?`<div style="color:#cbd5e1; font-size:0.9rem; margin:6px 0">${r.comment}</div>`:''}<div style="font-size:0.8rem; color:#6b7280">G:${r.general} R:${r.red_dot} • ${new Date(r.created_at).toLocaleDateString()}</div></div>`).join('');
+    }
+  }catch(e){}
+}
+document.getElementById('refreshReviews').addEventListener('click', loadReviews);
+document.getElementById('genBtn').addEventListener('click', generate);
+window.addEventListener('load', ()=>{ setTimeout(generate, 600); });
+</script>
+{% endblock %}
