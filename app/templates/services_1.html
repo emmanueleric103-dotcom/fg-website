@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Services - {{ settings.brand_name }}{% endblock %}
+{% block content %}
+<div class="container" style="padding:40px 20px 20px">
+  <div class="eyebrow">Services</div>
+  <h1 style="font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);letter-spacing:-0.02em">Services built for real use</h1>
+  <p class="muted" style="max-width:60ch;margin-top:12px;font-size:1.1rem">From Telegram shop bots to trading scanners — each service is a working product, not a template. Manageable from admin dashboard.</p>
+</div>
+<div class="container section" style="padding-top:20px">
+  <div class="grid grid-2">
+    {% for s in services %}
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:start">
+        <div class="card-icon">{% if s.icon == 'bot' %}🤖{% elif s.icon == 'gamepad-2' %}🎮{% elif s.icon == 'globe' %}🌐{% elif s.icon == 'shopping-bag' %}🛍️{% elif s.icon == 'trending-up' %}📈{% elif s.icon == 'terminal' %}⌨️{% elif s.icon == 'package' %}📦{% else %}⚙️{% endif %}</div>
+        <span class="chip">{{ s.views or 0 }} views</span>
+      </div>
+      <h3 style="font-size:1.3rem">{{ s.title }}</h3>
+      <p style="margin-top:8px">{{ s.description }}</p>
+      <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
+        <a href="/services/{{ s.slug }}" class="btn btn-secondary">Details</a>
+        <a href="/contact?service={{ s.slug }}" class="btn btn-primary">Request this service</a>
+      </div>
+    </div>
+    {% else %}
+    <div class="empty">No services published yet. Add them in /admin/services</div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

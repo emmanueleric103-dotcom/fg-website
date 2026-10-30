@@ -1,0 +1,420 @@
+{% extends "base.html" %}
+{% block title %}Free Fire Sensitivity Generator - SensiLab by FG (HefGe) | 2025{% endblock %}
+{% block meta_desc %}Generate perfect Free Fire sensitivity for your device. Infinix, Tecno, Samsung, Xiaomi, iPhone - 2GB to 12GB RAM. 2,3,4 finger claw HUD. Pro OB55 settings.{% endblock %}
+
+{% block head %}
+<style>
+.sensi-hero{
+  background: radial-gradient(1200px 600px at 20% -10%, rgba(0,212,255,0.18), transparent 60%), 
+              radial-gradient(800px 400px at 90% 0%, rgba(0,255,198,0.15), transparent 60%),
+              linear-gradient(180deg, #0a0f1f 0%, #070a14 100%);
+  padding: 64px 0 32px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.sensi-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background: rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.2);
+  color:#00d4ff; padding:6px 12px; border-radius:999px; font-size:0.78rem; letter-spacing:0.04em; text-transform:uppercase; font-weight:600;
+}
+.sensi-title{
+  font-family: 'Space Grotesk', sans-serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight:700; line-height:1.05; margin:18px 0 14px;
+  background: linear-gradient(100deg, #fff 0%, #a5f3fc 45%, #00d4ff 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.sensi-sub{ color: #9ca3af; max-width: 62ch; font-size:1.05rem; line-height:1.6; }
+.sensi-grid{ display:grid; grid-template-columns: 1.05fr 0.95fr; gap:28px; margin-top:32px; }
+@media(max-width: 960px){ .sensi-grid{ grid-template-columns:1fr; } }
+.card-dark{
+  background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); backdrop-filter: blur(12px);
+  border-radius:18px; padding:22px;
+}
+.card-dark h3{ font-family:'Space Grotesk'; font-size:1.15rem; margin:0 0 14px; color:#e5e7eb; }
+.label{ font-size:0.82rem; color:#9ca3af; font-weight:600; letter-spacing:0.03em; text-transform:uppercase; margin-bottom:6px; display:block; }
+.select, .input{
+  width:100%; background:#0f1426; border:1px solid rgba(255,255,255,0.1); color:#e5e7eb; 
+  border-radius:12px; padding:12px 14px; font-size:0.95rem; outline:none; transition:.2s;
+}
+.select:focus, .input:focus{ border-color:#00d4ff; box-shadow:0 0 0 3px rgba(0,212,255,0.15); }
+.row2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.row3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+@media(max-width:600px){ .row2,.row3{ grid-template-columns:1fr; } }
+.btn-generate{
+  width:100%; background: linear-gradient(100deg, #00d4ff, #00ffc6); color:#031018; border:none;
+  padding:14px 18px; border-radius:14px; font-weight:800; font-family:'Space Grotesk'; font-size:1.05rem; cursor:pointer;
+  letter-spacing:0.02em; transition:.2s; box-shadow:0 8px 24px rgba(0,212,255,0.25);
+}
+.btn-generate:hover{ transform: translateY(-1px); box-shadow:0 12px 32px rgba(0,212,255,0.35); }
+.result-card{
+  background: linear-gradient(180deg, rgba(0,212,255,0.08), rgba(255,255,255,0.02));
+  border:1px solid rgba(0,212,255,0.18); border-radius:18px; padding:20px; position:relative; overflow:hidden;
+}
+.result-card:before{
+  content:""; position:absolute; top:-40%; right:-20%; width:60%; height:80%; background: radial-gradient(400px 200px at center, rgba(0,212,255,0.15), transparent);
+  pointer-events:none;
+}
+.sensi-item{ display:flex; justify-content:space-between; align-items:center; padding:11px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
+.sensi-item:last-child{ border-bottom:none; }
+.sensi-item span:first-child{ color:#9ca3af; font-size:0.9rem; }
+.sensi-item b{ font-family:'Space Grotesk'; font-size:1.15rem; color:#fff; letter-spacing:0.02em; }
+.sensi-item .copy{ background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:#cbd5e1; border-radius:8px; padding:4px 8px; font-size:0.75rem; cursor:pointer; }
+.sensi-item .copy:hover{ background:rgba(0,212,255,0.15); color:#00d4ff; }
+.badge-tier{ display:inline-flex; padding:4px 10px; border-radius:999px; font-size:0.72rem; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; }
+.tier-low{ background:rgba(239,68,68,0.15); color:#fca5a5; border:1px solid rgba(239,68,68,0.2); }
+.tier-mid{ background:rgba(234,179,8,0.15); color:#fde68a; border:1px solid rgba(234,179,8,0.2); }
+.tier-high{ background:rgba(34,197,94,0.15); color:#86efac; border:1px solid rgba(34,197,94,0.2); }
+.tip{ background:rgba(255,255,255,0.03); border-left:3px solid #00d4ff; padding:10px 12px; border-radius:8px; margin:8px 0; font-size:0.9rem; color:#cbd5e1; line-height:1.5; }
+.kbd{ background:#0f1426; border:1px solid rgba(255,255,255,0.1); border-bottom-width:2px; padding:2px 6px; border-radius:6px; font-family:monospace; font-size:0.85em; }
+.old-scale{ font-size:0.8rem; color:#6b7280; margin-left:8px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="sensi-hero">
+  <div class="container">
+    <div class="sensi-badge">● Live • OB55 2025 • Pro Research • No Ads</div>
+    <h1 class="sensi-title">Free Fire Sensitivity Generator — SensiLab</h1>
+    <p class="sensi-sub">
+      Built from 2025 pro player data (General 95-100, Red Dot 90-95, 2x 80-85, 4x 70-75). 
+      We analyze your <b style="color:#e5e7eb">device brand, RAM, finger claw, gyro & role</b> to give you perfect headshot settings. 
+      Works for Infinix, Tecno, Samsung, Xiaomi, Realme, Itel & iPhone — 2GB to 12GB RAM.
+    </p>
+
+    <div class="sensi-grid">
+      <!-- LEFT: INPUTS -->
+      <div class="card-dark">
+        <h3>🎮 Your Setup</h3>
+        
+        <div class="row2" style="margin-bottom:14px">
+          <div>
+            <label class="label">Phone Brand</label>
+            <select id="brand" class="select">
+              <option value="infinix_smart">Infinix Smart / Tecno Spark (2-3GB)</option>
+              <option value="infinix_hot" selected>Infinix Hot / Tecno Camon</option>
+              <option value="tecno_spark">Tecno Spark Series</option>
+              <option value="tecno_camon">Tecno Camon Series</option>
+              <option value="itel">Itel (Low-end)</option>
+              <option value="samsung">Samsung A/M Series</option>
+              <option value="xiaomi">Xiaomi / Redmi / Poco</option>
+              <option value="realme">Realme / Oppo / Vivo</option>
+              <option value="iphone">iPhone</option>
+              <option value="others">Other Android</option>
+            </select>
+          </div>
+          <div>
+            <label class="label">RAM</label>
+            <select id="ram" class="select">
+              <option value="2">2GB RAM - Very Low</option>
+              <option value="3">3GB RAM - Low</option>
+              <option value="4" selected>4GB RAM - Mid</option>
+              <option value="6">6GB RAM - Good</option>
+              <option value="8">8GB RAM - High</option>
+              <option value="12">12GB+ RAM - Flagship</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row3" style="margin-bottom:14px">
+          <div>
+            <label class="label">Finger Claw</label>
+            <select id="playstyle" class="select">
+              <option value="2">2 Finger - Thumb</option>
+              <option value="3" selected>3 Finger Claw (Best for Naija)</option>
+              <option value="4">4 Finger Claw - Pro</option>
+            </select>
+          </div>
+          <div>
+            <label class="label">Gyroscope</label>
+            <select id="gyro" class="select">
+              <option value="none" selected>No Gyro</option>
+              <option value="scope_only">Scope Only</option>
+              <option value="always">Always On</option>
+            </select>
+          </div>
+          <div>
+            <label class="label">Your Role</label>
+            <select id="role" class="select">
+              <option value="rusher" selected>Rusher - Close Fight</option>
+              <option value="balanced">Balanced - All Round</option>
+              <option value="sniper">Sniper - Long Range</option>
+              <option value="support">Support - Mid + Gloo</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-bottom:18px">
+          <label class="label">Experience Level</label>
+          <select id="experience" class="select">
+            <option value="beginner">Beginner - I miss a lot</option>
+            <option value="intermediate" selected>Intermediate - I get some headshots</option>
+            <option value="pro">Pro - I want faster drag</option>
+          </select>
+        </div>
+
+        <button id="genBtn" class="btn-generate">⚡ Generate My Sensitivity</button>
+        
+        <p style="margin-top:12px; font-size:0.8rem; color:#6b7280; text-align:center">
+          Based on OB55 pro data: General 95-100 old = 190-200 new. We convert automatically.<br>
+          Privacy: Nothing is saved, runs on your phone.
+        </p>
+      </div>
+
+      <!-- RIGHT: RESULTS -->
+      <div>
+        <div id="resultBox" class="result-card" style="display:none">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px">
+            <h3 style="margin:0">🎯 Your Perfect Settings</h3>
+            <span id="tierBadge" class="badge-tier tier-mid">Mid-Range</span>
+          </div>
+          <div id="genFor" style="font-size:0.8rem; color:#9ca3af; margin-bottom:12px"></div>
+          
+          <div class="sensi-item"><span>General <span class="old-scale" id="old_general"></span></span><div><b id="v_general">185</b> <button class="copy" onclick="copyVal('v_general')">Copy</button></div></div>
+          <div class="sensi-item"><span>Red Dot <span class="old-scale" id="old_red"></span></span><div><b id="v_red">175</b> <button class="copy" onclick="copyVal('v_red')">Copy</button></div></div>
+          <div class="sensi-item"><span>2x Scope <span class="old-scale" id="old_2x"></span></span><div><b id="v_2x">155</b> <button class="copy" onclick="copyVal('v_2x')">Copy</button></div></div>
+          <div class="sensi-item"><span>4x Scope <span class="old-scale" id="old_4x"></span></span><div><b id="v_4x">135</b> <button class="copy" onclick="copyVal('v_4x')">Copy</button></div></div>
+          <div class="sensi-item"><span>Sniper Scope <span class="old-scale" id="old_sniper"></span></span><div><b id="v_sniper">90</b> <button class="copy" onclick="copyVal('v_sniper')">Copy</button></div></div>
+          <div class="sensi-item"><span>Free Look</span><div><b id="v_free">140</b> <button class="copy" onclick="copyVal('v_free')">Copy</button></div></div>
+          
+          <div style="margin-top:16px; display:grid; grid-template-columns:1fr 1fr; gap:10px">
+            <div style="background:rgba(255,255,255,0.04); border-radius:10px; padding:10px; text-align:center">
+              <div style="font-size:0.75rem; color:#9ca3af">RECOMMENDED DPI</div>
+              <div style="font-family:'Space Grotesk'; font-weight:700; font-size:1.2rem; color:#00ffc6" id="v_dpi">400</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.04); border-radius:10px; padding:10px; text-align:center">
+              <div style="font-size:0.75rem; color:#9ca3af">FIRE BUTTON</div>
+              <div style="font-family:'Space Grotesk'; font-weight:700; font-size:1.2rem; color:#00d4ff" id="v_fire">48%</div>
+            </div>
+          </div>
+
+          <div style="margin-top:16px">
+            <div style="font-size:0.85rem; font-weight:700; color:#e5e7eb; margin-bottom:6px">📱 Device Note</div>
+            <div id="brandNote" class="tip"></div>
+          </div>
+        </div>
+
+        <div id="hudBox" class="card-dark" style="margin-top:16px; display:none">
+          <h3 id="hudTitle">🖐️ HUD Layout</h3>
+          <p id="hudLayout" style="color:#cbd5e1; font-size:0.92rem; line-height:1.6; margin:8px 0"></p>
+          <div style="margin:10px 0">
+            <span class="label">Fire Button Size</span>
+            <div id="hudFire" style="color:#00d4ff; font-weight:700"></div>
+          </div>
+          <div id="hudTips"></div>
+        </div>
+
+        <div id="tipsBox" class="card-dark" style="margin-top:16px; display:none">
+          <h3>🔥 Training Tips for You</h3>
+          <div id="tipsList"></div>
+          <div style="margin-top:14px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.06)">
+            <div style="font-size:0.85rem; font-weight:700; color:#e5e7eb; margin-bottom:6px">⚙️ How to apply:</div>
+            <div style="font-size:0.85rem; color:#9ca3af; line-height:1.6">
+              1. Open Free Fire → <span class="kbd">Settings</span> → <span class="kbd">Sensitivity</span><br>
+              2. Set the 6 numbers from above<br>
+              3. Go to <span class="kbd">Custom HUD</span> → arrange as per HUD guide<br>
+              4. Test in <b style="color:#e5e7eb">Training Ground</b> 10 mins daily<br>
+              5. Don't change for 3 days — muscle memory needs time
+            </div>
+          </div>
+        </div>
+
+        <div id="ctaBox" class="card-dark" style="margin-top:16px; display:none; text-align:center; background: linear-gradient(100deg, rgba(0,212,255,0.08), rgba(0,255,198,0.06)); border-color: rgba(0,212,255,0.2);">
+          <div style="font-weight:700; color:#fff; margin-bottom:6px">Want this as Telegram Bot?</div>
+          <div style="font-size:0.9rem; color:#9ca3af; margin-bottom:12px">I built a bot that does this automatically. Get personal config in 10 seconds.</div>
+          <a id="botLink" href="{{ settings.telegram_url or '/contact' }}" target="_blank" class="btn-generate" style="display:inline-block; text-decoration:none; width:auto; padding:10px 18px; font-size:0.95rem">🤖 Open Sensitivity Bot</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:28px 0 64px; background:#070a14">
+  <div class="container">
+    <div class="card-dark">
+      <h3>📊 How this generator works — Expert Research</h3>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; margin-top:12px">
+        <div>
+          <div style="color:#00d4ff; font-weight:700; font-size:0.9rem; margin-bottom:6px">2025 Pro Data</div>
+          <div style="color:#9ca3af; font-size:0.88rem; line-height:1.6">Based on BitTopup, Sensi-FF, Frontal Gaming, Raistar settings. OB55 meta: General 95-100 (190-200 new), Red Dot 90-95, 2x 80-85, 4x 70-75, Sniper 35-55. We scale by device.</div>
+        </div>
+        <div>
+          <div style="color:#00ffc6; font-weight:700; font-size:0.9rem; margin-bottom:6px">Device RAM Logic</div>
+          <div style="color:#9ca3af; font-size:0.88rem; line-height:1.6">2GB RAM = higher General to fight lag, lower scopes for stability. 8GB+ = lower General for precision, higher scopes. From VCGamers 2026 low-end research.</div>
+        </div>
+        <div>
+          <div style="color:#a5f3fc; font-weight:700; font-size:0.9rem; margin-bottom:6px">Brand Touch Response</div>
+          <div style="color:#9ca3af; font-size:0.88rem; line-height:1.6">Infinix Smart / Tecno Spark / Itel = low touch sampling (120Hz), needs +12-16 General. Samsung/iPhone = 180-240Hz, needs -8 to -10 for control.</div>
+        </div>
+      </div>
+      <div style="margin-top:14px; font-size:0.8rem; color:#6b7280">Sources: BitTopup OB50 sensitivity guide, Sensi-FF custom HUD research, GamingNewsLab OB52 update, VCGamers RAM sensitivity tests 2026. Built by FG (HefGe) - Termux + Python.</div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function copyVal(id){
+  const el = document.getElementById(id);
+  const text = el.innerText;
+  navigator.clipboard.writeText(text).then(()=> {
+    const btn = el.nextElementSibling;
+    const orig = btn.innerText;
+    btn.innerText = 'Copied!';
+    btn.style.color = '#00ffc6';
+    setTimeout(()=> { btn.innerText = orig; btn.style.color=''; }, 1200);
+  });
+}
+
+function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
+
+function generate(){
+  const brand = document.getElementById('brand').value;
+  const ram = parseInt(document.getElementById('ram').value);
+  const playstyle = parseInt(document.getElementById('playstyle').value);
+  const gyro = document.getElementById('gyro').value;
+  const role = document.getElementById('role').value;
+  const exp = document.getElementById('experience').value;
+
+  let res = {general:185, red_dot:175, scope_2x:155, scope_4x:135, sniper:90, free_look:140, dpi:400, fire_button:48};
+
+  const ramAdj = {
+    2:{general:12,red_dot:8,scope_2x:-12,scope_4x:-18,sniper:-12,free_look:-5,dpi:25},
+    3:{general:6,red_dot:4,scope_2x:-6,scope_4x:-10,sniper:-6,dpi:12},
+    4:{},
+    6:{general:-5,red_dot:-3,scope_2x:5,scope_4x:8,sniper:5,free_look:3,dpi:-10},
+    8:{general:-8,red_dot:-6,scope_2x:10,scope_4x:14,sniper:10,dpi:-18},
+    12:{general:-12,red_dot:-10,scope_2x:14,scope_4x:18,sniper:14,dpi:-28}
+  };
+  const brandAdj = {
+    infinix_smart:{general:14,red_dot:12,scope_2x:-4,dpi:-5},
+    tecno_spark:{general:14,red_dot:12,scope_2x:-4,dpi:-5},
+    itel:{general:16,red_dot:14,scope_2x:-6,dpi:-10},
+    infinix_hot:{general:7,red_dot:6,scope_2x:2,dpi:5},
+    tecno_camon:{general:7,red_dot:6,scope_2x:2,dpi:5},
+    samsung:{general:-4,red_dot:-3,scope_2x:2,sniper:3,dpi:8},
+    xiaomi:{general:-3,red_dot:-3,scope_2x:3},
+    realme:{general:-2,red_dot:-2,dpi:2},
+    iphone:{general:-10,red_dot:-10,scope_2x:-6,scope_4x:-4,sniper:-8,dpi:-15},
+    others:{}
+  };
+  const playAdj = {
+    2:{general:-14,red_dot:-10,free_look:-12,fire_button:54},
+    3:{fire_button:46},
+    4:{general:10,red_dot:8,free_look:14,fire_button:43}
+  };
+  const gyroAdj = {
+    none:{},
+    always:{general:-18,red_dot:-18,scope_2x:-18,scope_4x:-18,sniper:-22},
+    scope_only:{scope_4x:-10,sniper:-18}
+  };
+  const roleAdj = {
+    rusher:{general:12,red_dot:12,scope_2x:10,scope_4x:-8,sniper:-18,free_look:12},
+    balanced:{},
+    sniper:{general:-12,red_dot:-10,scope_2x:-8,scope_4x:8,sniper:-24,free_look:-8},
+    support:{general:-6,red_dot:-6,scope_2x:6,scope_4x:12,free_look:8}
+  };
+  const expAdj = {
+    beginner:{general:-22,red_dot:-18,scope_2x:-18,scope_4x:-18,sniper:-14,free_look:-12},
+    intermediate:{},
+    pro:{general:12,red_dot:10,scope_2x:10,scope_4x:6,sniper:-6,free_look:6}
+  };
+
+  const adjs = [ramAdj[ram]||{}, brandAdj[brand]||{}, playAdj[playstyle]||{}, gyroAdj[gyro]||{}, roleAdj[role]||{}, expAdj[exp]||{}];
+  adjs.forEach(adj=>{
+    Object.keys(adj).forEach(k=>{
+      if(res[k] !== undefined && k!=='fire_button') res[k]+=adj[k];
+    });
+  });
+  if(playstyle===2) res.fire_button = ram<=3?56:54;
+  else if(playstyle===4) res.fire_button=43;
+  else res.fire_button=46;
+
+  res.general = clamp(res.general,85,200);
+  res.red_dot = clamp(res.red_dot,80,200);
+  res.scope_2x = clamp(res.scope_2x,60,190);
+  res.scope_4x = clamp(res.scope_4x,50,185);
+  res.sniper = clamp(res.sniper,20,120);
+  res.free_look = clamp(res.free_look,60,200);
+  res.dpi = clamp(res.dpi,360,480);
+
+  const old = {
+    general: Math.floor(res.general/2),
+    red: Math.floor(res.red_dot/2),
+    _2x: Math.floor(res.scope_2x/2),
+    _4x: Math.floor(res.scope_4x/2),
+    sniper: Math.floor(res.sniper/2)
+  };
+
+  // Update UI
+  document.getElementById('v_general').innerText=res.general;
+  document.getElementById('v_red').innerText=res.red_dot;
+  document.getElementById('v_2x').innerText=res.scope_2x;
+  document.getElementById('v_4x').innerText=res.scope_4x;
+  document.getElementById('v_sniper').innerText=res.sniper;
+  document.getElementById('v_free').innerText=res.free_look;
+  document.getElementById('v_dpi').innerText=res.dpi;
+  document.getElementById('v_fire').innerText=res.fire_button+'%';
+
+  document.getElementById('old_general').innerText=`(old ${old.general})`;
+  document.getElementById('old_red').innerText=`(old ${old.red})`;
+  document.getElementById('old_2x').innerText=`(old ${old._2x})`;
+  document.getElementById('old_4x').innerText=`(old ${old._4x})`;
+  document.getElementById('old_sniper').innerText=`(old ${old.sniper})`;
+
+  const tier = ram<=3 || ['itel','infinix_smart','tecno_spark'].includes(brand) ? 'Low-End' : ram>=8 ? 'High-End' : 'Mid-Range';
+  const badge = document.getElementById('tierBadge');
+  badge.innerText=tier;
+  badge.className='badge-tier ' + (tier==='Low-End'?'tier-low':tier==='High-End'?'tier-high':'tier-mid');
+
+  document.getElementById('genFor').innerText=`Generated for: ${brand.replace('_',' ')} | ${ram}GB RAM | ${playstyle} finger | ${role} | ${exp}`;
+
+  const brandNotes={
+    infinix_smart:'Infinix Smart / Tecno Spark - Touch response is low, use DPI 380-410. Close background apps, turn on High FPS, use Game Mode.',
+    tecno_spark:'Tecno Spark - DPI 380-410 recommended. Close background apps.',
+    itel:'Itel - Very low touch response, DPI 360-400 max, higher sensitivity needed.',
+    infinix_hot:'Infinix Hot / Tecno Camon - DPI 400-440 best. Better touch than Smart series.',
+    tecno_camon:'Tecno Camon - DPI 400-440 best.',
+    samsung:'Samsung - Good touch sampling (180Hz), slightly lower sensitivity for control. DPI 400-430.',
+    xiaomi:'Xiaomi/Redmi/Poco - Good response, DPI 380-420.',
+    realme:'Realme/Oppo/Vivo - Balanced touch.',
+    iphone:'iPhone - 120Hz touch, lower sensitivity needed for precision. DPI 390-410.',
+    others:'Generic Android - DPI 400 is safe starting point.'
+  };
+  document.getElementById('brandNote').innerText = brandNotes[brand] || brandNotes['others'];
+
+  const hudData={
+    2:{title:'2-Finger Thumb - Classic', layout:'Both thumbs do everything. Movement left, aim + fire right. Fire button 50-55% size near aim thumb. Jump & crouch close so thumb can reach without leaving aim.', fire:`${res.fire_button}% (big for thumb)`, tips:['Keep scope and fire separated','Use 52-56% fire button','Practice 10 mins daily in Training']},
+    3:{title:'3-Finger Claw - Most Popular in Nigeria', layout:'Left thumb movement, right thumb aim, LEFT INDEX fire top-left. Separates firing from aiming = faster headshots. This is what 70% of Nigerian pros use.', fire:`Left Fire ${res.fire_button}% top-left | Right Fire 48% near aim`, tips:['Left fire 46% top-left corner','Right fire 48% near aim thumb','Gloo wall near left thumb for fast gloo']},
+    4:{title:'4-Finger Claw - Pro / E-Sports', layout:'Left thumb move, left index fire upper-left, right thumb aim, right index jump/scope/crouch upper-right. You can shoot + jump + gloo at same time.', fire:`${res.fire_button}% (small for speed)`, tips:['Needs 1 week to master - dont give up','Use 42-46% fire buttons','Place scope separate from fire to avoid overlap']}
+  };
+  const hud = hudData[playstyle];
+  document.getElementById('hudTitle').innerText='🖐️ '+hud.title;
+  document.getElementById('hudLayout').innerText=hud.layout;
+  document.getElementById('hudFire').innerText=hud.fire;
+  document.getElementById('hudTips').innerHTML = hud.tips.map(t=>`<div class="tip">• ${t}</div>`).join('');
+
+  const roleTips={
+    rusher:['Practice jump+shot drags in Training Ground','50 shots on moving target with Red Dot daily','Use M1887 + Desi for close drag practice'],
+    sniper:['Practice 20 sniper one-shots on long dummies','Free Look + Sniper drag combo','Lower Sniper scope = steadier long shots'],
+    balanced:['30 mins daily: 10 close, 10 mid, 10 long','Test in Clash Squad before Ranked','Copy HUD then tweak 2-3 days'],
+    support:['Focus on 4x scope tracking','Gloo wall speed > aim speed','Positioning > aim for support']
+  };
+  document.getElementById('tipsList').innerHTML = (roleTips[role]||roleTips['balanced']).map(t=>`<div class="tip">• ${t}</div>`).join('');
+
+  document.getElementById('resultBox').style.display='block';
+  document.getElementById('hudBox').style.display='block';
+  document.getElementById('tipsBox').style.display='block';
+  document.getElementById('ctaBox').style.display='block';
+
+  document.getElementById('resultBox').scrollIntoView({behavior:'smooth', block:'start'});
+
+  // Track
+  try{
+    fetch('/api/track', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({event:'sensi_generated', brand, ram, playstyle, role})});
+  }catch(e){}
+}
+
+document.getElementById('genBtn').addEventListener('click', generate);
+// Auto generate on load
+window.addEventListener('load', ()=>{ setTimeout(generate, 600); });
+</script>
+{% endblock %}

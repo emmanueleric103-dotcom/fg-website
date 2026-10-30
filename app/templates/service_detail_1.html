@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{ service.title }} - {{ settings.brand_name }}{% endblock %}
+{% block content %}
+<div class="container" style="padding:40px 20px">
+  <a href="/services" class="small muted">← Back to services</a>
+  <div style="margin-top:18px;max-width:760px">
+    <div class="card-icon" style="width:56px;height:56px;font-size:1.4rem">⚙️</div>
+    <h1 style="font-family:var(--font-display);font-size:2.2rem;margin-top:12px">{{ service.title }}</h1>
+    <p class="muted" style="margin-top:10px;font-size:1.1rem">{{ service.description }}</p>
+    <div style="margin-top:24px;display:flex;gap:12px">
+      <a href="/contact?service={{ service.slug }}" class="btn btn-primary">Request this service</a>
+      <a href="https://wa.me/{{ settings.whatsapp_number }}?text=Hi%20FG%20(HefGe)%20-%20I%20need%20{{ service.title|urlencode }}" target="_blank" class="btn btn-secondary">WhatsApp</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
