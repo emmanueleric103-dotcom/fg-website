@@ -117,30 +117,3 @@ class SiteSetting(db.Model):
             s = SiteSetting(key=key, value=value)
             db.session.add(s)
         return s
-
-class SensitivityReview(db.Model):
-    __tablename__ = 'sensitivity_reviews'
-    id = db.Column(db.Integer, primary_key=True)
-    brand = db.Column(db.String(50), index=True)
-    ram = db.Column(db.Integer)
-    iphone_model = db.Column(db.String(50))
-    playstyle = db.Column(db.Integer)
-    gyro = db.Column(db.String(20))
-    role = db.Column(db.String(20))
-    experience = db.Column(db.String(20))
-    # generated settings
-    general = db.Column(db.Integer)
-    red_dot = db.Column(db.Integer)
-    scope_2x = db.Column(db.Integer)
-    scope_4x = db.Column(db.Integer)
-    sniper = db.Column(db.Integer)
-    free_look = db.Column(db.Integer)
-    dpi = db.Column(db.Integer)
-    # rating
-    rating = db.Column(db.Integer, nullable=False)  # 1-5
-    comment = db.Column(db.Text)
-    author_name = db.Column(db.String(100))
-    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), index=True)
-    ip_address = db.Column(db.String(100))
-    is_approved = db.Column(db.Boolean, default=True)
-    helpful = db.Column(db.Integer, default=0)

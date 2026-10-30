@@ -12,35 +12,17 @@ def generate_sensitivity(profile):
     """
     profile = {
         brand: infinix_smart, infinix_hot, tecno_spark, tecno_camon, samsung, xiaomi, realme, itel, iphone, others
-        ram: 2,3,4,6,8,12 (for iPhone mapped from model)
-        iphone_model: iphone_7_8_se, iphone_x_xr_11, iphone_12_mini, iphone_12_13_14, iphone_14pro_15, iphone_15promax_16 etc
+        ram: 2,3,4,6,8,12
         playstyle: 2,3,4
         gyro: none, always, scope_only
         role: rusher, balanced, sniper, support
         experience: beginner, intermediate, pro
+        dpi: auto or int
     }
+    Returns dict with 6 sensitivities + meta
     """
     brand = profile.get('brand', 'others')
-    iphone_model = profile.get('iphone_model', '')
-    
-    # iPhone mapping - iPhone no dey use RAM like Android, we use model to determine tier
-    iphone_ram_map = {
-        'iphone_7_8_se': 2,      # A10-A13, 2GB
-        'iphone_x_xr_11': 3,     # A11-A13, 3GB
-        'iphone_12_mini': 4,     # A14, 4GB
-        'iphone_12_13_14': 6,    # A14-A15-A16, 4-6GB
-        'iphone_14pro_15': 6,    # A16-A17, 6GB
-        'iphone_15promax_16': 8, # A17Pro-A18, 8GB
-        'iphone_15pro_16pro': 8,
-    }
-    if brand == 'iphone' and iphone_model in iphone_ram_map:
-        ram = iphone_ram_map[iphone_model]
-    else:
-        try:
-            ram = int(profile.get('ram', 4))
-        except:
-            ram = 4
-
+    ram = int(profile.get('ram', 4))
     playstyle = int(profile.get('playstyle', 3))
     gyro = profile.get('gyro', 'none')
     role = profile.get('role', 'balanced')
@@ -184,19 +166,8 @@ def generate_sensitivity(profile):
         'itel': 'Itel - Very low touch, DPI 360-400 max, higher sensitivity needed to compensate lag.',
         'samsung': 'Samsung A series - DPI 400-430, touch sampling 180Hz, use slightly lower sensitivity for control.',
         'xiaomi': 'Xiaomi/Redmi - DPI 380-420, good touch response.',
-        'iphone': 'iPhone - 120Hz ProMotion, super low latency. Use lower sensitivity for precision. iPhone no need DPI change, iOS handles it.',
+        'iphone': 'iPhone - DPI 390-410, 120Hz touch. Lower sensitivity = more precision.',
         'others': 'Generic Android - DPI 400 is safe starting point.'
-    }
-
-    # iPhone model names for display
-    iphone_names = {
-        'iphone_7_8_se': 'iPhone 7/8/SE 2020',
-        'iphone_x_xr_11': 'iPhone X/XR/11',
-        'iphone_12_mini': 'iPhone 12 Mini / 12',
-        'iphone_12_13_14': 'iPhone 12/13/14',
-        'iphone_14pro_15': 'iPhone 14 Pro/15',
-        'iphone_15promax_16': 'iPhone 15 Pro Max/16 Pro Max',
-        'iphone_15pro_16pro': 'iPhone 15 Pro/16 Pro',
     }
 
     # Training tips based on role
@@ -207,24 +178,13 @@ def generate_sensitivity(profile):
         'support': ['Focus on 4x scope tracking', 'Gloo wall speed > aim speed', 'Support needs better positioning than aim']
     }
 
-    # Build display string - handle iPhone specially (no RAM)
-    if brand == 'iphone' and iphone_model:
-        display_device = iphone_names.get(iphone_model, iphone_model)
-        gen_for = f"{display_device} | {playstyle} finger | {role} | {exp}"
-        device_tier = 'Low-End' if ram <=2 else 'Mid-Range' if ram <=4 else 'High-End' if ram >=8 else 'Mid-High'
-    else:
-        gen_for = f"{brand} | {ram}GB RAM | {playstyle} finger | {role} | {exp}"
-        device_tier = 'Low-End' if ram <= 3 or brand in ['itel', 'infinix_smart', 'tecno_spark'] else 'Mid-Range' if ram <=6 else 'High-End'
-
     result['meta'] = {
         'brand_note': brand_adj.get(brand, {}).get('note', ''),
         'hud': hud_map.get(playstyle, hud_map[3]),
         'dpi_guide': dpi_guides.get(brand, dpi_guides['others']),
         'training_tips': tips_by_role.get(role, tips_by_role['balanced']),
-        'device_tier': device_tier,
-        'generated_for': gen_for,
-        'is_iphone': brand == 'iphone',
-        'iphone_model': iphone_model if brand == 'iphone' else ''
+        'device_tier': 'Low-End' if ram <= 3 or brand in ['itel', 'infinix_smart', 'tecno_spark'] else 'Mid-Range' if ram <=6 else 'High-End',
+        'generated_for': f"{brand} | {ram}GB RAM | {playstyle} finger | {role} | {exp}"
     }
 
     # Old vs new scale note

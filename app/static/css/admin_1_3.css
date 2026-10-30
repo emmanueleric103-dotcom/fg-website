@@ -1,0 +1,54 @@
+/* Admin CSS - clean dark dashboard */
+:root{
+  --ad-bg:#080b18;
+  --ad-card:#121a33;
+  --ad-border:#1d2a50;
+  --ad-text:#e6ebff;
+  --ad-muted:#8a94b8;
+  --ad-accent:#00d4ff;
+}
+body.admin{background:var(--ad-bg);font-family:'Inter',system-ui,sans-serif;color:var(--ad-text)}
+.admin-layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+@media(max-width:900px){.admin-layout{grid-template-columns:1fr}}
+.sidebar{
+  background:rgba(12,18,40,0.9);border-right:1px solid var(--ad-border);
+  padding:20px;position:sticky;top:0;height:100vh;overflow:auto;
+}
+@media(max-width:900px){.sidebar{position:relative;height:auto}}
+.sidebar .logo{margin-bottom:28px}
+.side-nav{display:flex;flex-direction:column;gap:6px}
+.side-nav a{
+  padding:10px 12px;border-radius:10px;color:var(--ad-muted);
+  display:flex;align-items:center;gap:10px;font-weight:500;font-size:0.92rem;
+  transition:all .2s;
+}
+.side-nav a:hover,.side-nav a.active{background:rgba(0,212,255,0.1);color:var(--ad-text);border:1px solid rgba(0,212,255,0.15)}
+.side-nav a.active{color:var(--ad-accent)}
+.main{padding:28px}
+@media(max-width:600px){.main{padding:18px}}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+.topbar h1{font-family:'Space Grotesk',sans-serif;font-size:1.6rem}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+@media(max-width:1000px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.kpi-grid{grid-template-columns:1fr}}
+.kpi{background:var(--ad-card);border:1px solid var(--ad-border);border-radius:14px;padding:18px}
+.kpi .label{font-size:0.8rem;color:var(--ad-muted);text-transform:uppercase;letter-spacing:0.05em}
+.kpi .value{font-size:1.7rem;font-weight:700;margin-top:6px}
+.kpi .sub{font-size:0.82rem;color:var(--ad-muted);margin-top:4px}
+.admin-card{background:var(--ad-card);border:1px solid var(--ad-border);border-radius:14px;padding:20px;margin-bottom:18px}
+.table{width:100%;border-collapse:collapse}
+.table th{font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--ad-muted);text-align:left;padding:10px 8px;border-bottom:1px solid var(--ad-border)}
+.table td{padding:12px 8px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:0.92rem}
+.table tr:hover td{background:rgba(255,255,255,0.02)}
+.input, .textarea, .select{width:100%;padding:10px 12px;border-radius:10px;background:#0d1224;border:1px solid var(--ad-border);color:var(--ad-text)}
+.btn{padding:8px 14px;border-radius:999px;border:1px solid transparent;font-weight:600;cursor:pointer}
+.btn-primary{background:linear-gradient(135deg,#00d4ff,#00ffc6);color:#001018}
+.btn-secondary{background:transparent;border-color:var(--ad-border);color:var(--ad-text)}
+.btn-danger{background:rgba(255,80,80,0.15);border-color:rgba(255,80,80,0.25);color:#ff9a9a}
+.badge{padding:3px 8px;border-radius:999px;font-size:0.75rem;font-weight:600}
+.badge-new{background:rgba(0,212,255,0.15);color:#7adfff}
+.badge-read{background:rgba(255,255,255,0.08);color:var(--ad-muted)}
+.badge-resolved{background:rgba(0,255,198,0.12);color:#7affde}
+.chart-wrap{background:var(--ad-card);border:1px solid var(--ad-border);border-radius:14px;padding:18px}
+.login-wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
+.login-card{background:var(--ad-card);border:1px solid var(--ad-border);border-radius:20px;padding:28px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
