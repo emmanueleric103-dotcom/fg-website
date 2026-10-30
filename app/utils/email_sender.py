@@ -1,4 +1,3 @@
-import os
 import random
 
 def generate_code():
@@ -6,8 +5,8 @@ def generate_code():
 
 def send_code(to_email, code):
     print(f"DEV CODE for {to_email}: {code}")
-    return True, f"Your code is {code} - Enter it below (no domain needed, works for all emails)", code
+    return True, f"Your code is {code} - Enter it below", code
 
 def send_verification_email(to_email, code):
-    # auth.py calls this name - just call send_code
+    # auth.py needs this exact name
     return send_code(to_email, code)
