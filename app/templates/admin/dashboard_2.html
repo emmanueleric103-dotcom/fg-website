@@ -1,0 +1,82 @@
+{% extends "admin/layout.html" %}
+{% block title %}Overview - Admin{% endblock %}
+{% block content %}
+<div class="topbar">
+  <h1>Overview</h1>
+  <div style="display:flex;gap:8px">
+    <form method="POST" action="/admin/api/aggregate" style="display:inline"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="btn btn-secondary">Refresh stats</button></form>
+  </div>
+</div>
+
+<div class="kpi-grid">
+  <div class="kpi"><div class="label">Today</div><div class="value">{{ stats.today_views }}</div><div class="sub">{{ stats.today_unique }} unique • page views</div></div>
+  <div class="kpi"><div class="label">Last 7 days</div><div class="value">{{ stats.week_views }}</div><div class="sub">{{ stats.week_unique }} unique</div></div>
+  <div class="kpi"><div class="label">Total views</div><div class="value">{{ stats.total_views }}</div><div class="sub">since tracking began</div></div>
+  <div class="kpi"><div class="label">Total visitors</div><div class="value">{{ stats.total_unique }}</div><div class="sub">unique pseudonymous IDs</div></div>
+</div>
+
+<div class="admin-card">
+  <h3 style="margin-bottom:12px">7-day trend</h3>
+  <canvas id="chart" height="120"></canvas>
+  {% if stats.chart_data|selectattr('views','equalto',0)|list|length == 7 %}
+  <div style="margin-top:12px;padding:12px;background:rgba(255,255,255,0.03);border:1px dashed #1d2a50;border-radius:10px;text-align:center;color:#8a94b8;font-size:0.9rem">No visitor data yet — chart will fill as real visitors browse. Admin traffic is excluded.</div>
+  {% endif %}
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+  <div class="admin-card">
+    <h3>Most visited pages</h3>
+    <table class="table" style="margin-top:10px">
+      <tr><th>Page</th><th>Views</th></tr>
+      {% for p in stats.most_pages %}
+      <tr><td style="font-family:monospace;font-size:0.85rem">{{ p.path }}</td><td>{{ p.count }}</td></tr>
+      {% else %}
+      <tr><td colspan="2" style="color:#8a94b8;text-align:center;padding:20px">No data yet</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+  <div class="admin-card">
+    <h3>Recent messages</h3>
+    <table class="table" style="margin-top:10px">
+      <tr><th>Name</th><th>Service</th><th>Status</th></tr>
+      {% for m in stats.recent_contacts %}
+      <tr><td>{{ m.name }}</td><td>{{ m.service_interest or '-' }}</td><td><span class="badge badge-{{ m.status }}">{{ m.status }}</span></td></tr>
+      {% else %}
+      <tr><td colspan="3" style="color:#8a94b8;text-align:center;padding:20px">No messages yet</td></tr>
+      {% endfor %}
+    </table>
+    <div style="margin-top:12px"><a href="/admin/contacts" class="btn btn-secondary" style="font-size:0.85rem">View all →</a></div>
+  </div>
+</div>
+
+<div class="admin-card" style="margin-top:18px">
+  <h3>How analytics work</h3>
+  <div style="color:#8a94b8;font-size:0.9rem;margin-top:8px;line-height:1.6">
+    • Privacy-conscious: random first-party ID (fg_visitor_id), no IP stored in stats<br>
+    • Page view ≠ unique visitor — refresh within 30s not counted as new<br>
+    • Admin traffic excluded automatically<br>
+    • Timezone: Africa/Lagos (configurable in Settings)<br>
+    • Chart uses real DB data — no fake numbers<br>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+const chartData = {{ stats.chart_data|tojson }};
+const ctx = document.getElementById('chart');
+if(ctx && chartData){
+  new Chart(ctx, {
+    type:'line',
+    data:{
+      labels: chartData.map(d=>d.date),
+      datasets:[
+        {label:'Views', data: chartData.map(d=>d.views), borderColor:'#00d4ff', backgroundColor:'rgba(0,212,255,0.1)', tension:0.4, fill:true},
+        {label:'Unique', data: chartData.map(d=>d.unique), borderColor:'#00ffc6', backgroundColor:'rgba(0,255,198,0.08)', tension:0.4, fill:true}
+      ]
+    },
+    options:{responsive:true, plugins:{legend:{labels:{color:'#8a94b8'}}}, scales:{x:{ticks:{color:'#8a94b8'}, grid:{color:'rgba(255,255,255,0.06)'}}, y:{ticks:{color:'#8a94b8'}, grid:{color:'rgba(255,255,255,0.06)'}}}}
+  });
+}
+</script>
+{% endblock %}

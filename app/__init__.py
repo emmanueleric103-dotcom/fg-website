@@ -47,7 +47,6 @@ def create_app(config_name=None):
                 SiteSetting.set('brand_name', 'FG (HefGe)')
                 SiteSetting.set('timezone', 'Africa/Lagos')
             db.session.commit()
-            print("AUTO-SEED OK")
         except Exception as e:
             print(f"Auto-init: {e}")
     @app.errorhandler(404)
@@ -77,4 +76,5 @@ def create_app(config_name=None):
     def init_db_command():
         with app.app_context():
             db.create_all()
+            print("Database initialized via CLI")
     return app

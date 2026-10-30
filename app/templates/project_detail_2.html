@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}{{ project.title }} - {{ settings.brand_name }}{% endblock %}
+{% block content %}
+<div class="container" style="padding:40px 20px">
+  <a href="/projects" class="small muted">← Back to projects</a>
+  <div class="grid grid-2" style="margin-top:20px;gap:30px;align-items:start">
+    <div>
+      <div class="project-thumb" style="aspect-ratio:16/10">{% if project.image_url %}<img src="{{ project.image_url }}" alt="{{ project.title }}">{% else %}No preview image configured{% endif %}</div>
+      {% if project.technologies %}
+      <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+        {% for t in project.technologies.split(',') %}<span class="chip">{{ t.strip() }}</span>{% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    <div>
+      <span class="badge">{{ project.category or 'Project' }}</span>
+      {% if project.is_featured %}<span class="badge" style="margin-left:6px;background:rgba(0,255,198,0.15);color:#7affde">Featured</span>{% endif %}
+      <h1 style="font-family:var(--font-display);font-size:2rem;margin-top:12px">{{ project.title }}</h1>
+      <p class="muted" style="margin-top:12px;white-space:pre-line">{{ project.description }}</p>
+      <div style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap">
+        {% if project.live_url %}<a href="{{ project.live_url }}" target="_blank" class="btn btn-primary">Live demo ↗</a>{% endif %}
+        {% if project.source_url %}<a href="{{ project.source_url }}" target="_blank" class="btn btn-secondary">Source code ↗</a>{% endif %}
+        <a href="/contact?project={{ project.slug }}" class="btn btn-secondary">Ask about this project</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

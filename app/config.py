@@ -1,5 +1,6 @@
 import os
 from datetime import timedelta
+
 class Config:
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-key-change-in-production-please-32chars-min'
@@ -30,8 +31,12 @@ class Config:
     LOGIN_RATE_WINDOW = 300
     WTF_CSRF_TIME_LIMIT = None
     WTF_CSRF_ENABLED = True
+
 class ProductionConfig(Config):
     SESSION_COOKIE_SECURE = True
+
 class DevelopmentConfig(Config):
     SESSION_COOKIE_SECURE = False
+    SQLALCHEMY_ECHO = False
+
 config_by_name = {'production': ProductionConfig, 'development': DevelopmentConfig, 'default': DevelopmentConfig}

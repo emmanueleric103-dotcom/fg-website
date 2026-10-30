@@ -1,0 +1,21 @@
+{% extends "admin/layout.html" %}
+{% block title %}{{ 'Edit' if service else 'New' }} Service - Admin{% endblock %}
+{% block content %}
+<div class="topbar"><h1>{{ 'Edit' if service else 'New' }} Service</h1><a href="/admin/services" class="btn btn-secondary">Back</a></div>
+<div class="admin-card">
+<form method="POST">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <div style="display:grid;gap:14px">
+    <div><label class="label">Title *</label><input class="input" name="title" required value="{{ service.title if service else '' }}" placeholder="Telegram Bot Development"></div>
+    <div><label class="label">Short description</label><input class="input" name="short_description" value="{{ service.short_description if service else '' }}" placeholder="Short card text"></div>
+    <div><label class="label">Description *</label><textarea class="textarea" name="description" required rows="5" placeholder="Full description">{{ service.description if service else '' }}</textarea></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+      <div><label class="label">Icon (bot, gamepad-2, globe, shopping-bag, trending-up, terminal, package, lightbulb)</label><input class="input" name="icon" value="{{ service.icon if service else 'code' }}"></div>
+      <div><label class="label">Order index</label><input class="input" type="number" name="order_index" value="{{ service.order_index if service else 0 }}"></div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:24px"><input type="checkbox" name="is_published" {% if not service or service.is_published %}checked{% endif %}> Published</div>
+    </div>
+    <button class="btn btn-primary">Save service</button>
+  </div>
+</form>
+</div>
+{% endblock %}
