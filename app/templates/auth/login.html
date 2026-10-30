@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-md mx-auto mt-10 glass rounded-[24px] p-8">
+  <h1 class="text-2xl font-extrabold">Welcome back</h1>
+  <p class="text-sm text-white/50 mt-1">Password or Gmail code login</p>
+  <form method="POST" class="mt-6 space-y-4" id="loginForm">
+    <input name="email" type="email" required placeholder="your@gmail.com" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl outline-none focus:border-violet-500">
+    <div id="pwField">
+      <input name="password" type="password" placeholder="Password" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl outline-none focus:border-violet-500">
+    </div>
+    <input type="hidden" name="mode" value="password" id="modeInput">
+    <button type="submit" class="w-full py-3 bg-white text-black rounded-xl font-bold">Login with Password</button>
+    <button type="button" onclick="switchToCode()" class="w-full py-3 glass rounded-xl font-semibold">Send Gmail Code Instead</button>
+  </form>
+  <p class="mt-4 text-sm text-center text-white/50">No account? <a href="/auth/register" class="text-violet-400">Register</a></p>
+</div>
+<script>
+function switchToCode(){
+  document.getElementById('modeInput').value='code';
+  document.getElementById('pwField').style.display='none';
+  document.getElementById('loginForm').querySelector('button[type=submit]').innerText='Send Login Code to Gmail';
+  document.getElementById('loginForm').querySelector('button[type=submit]').className='w-full py-3 bg-violet-600 rounded-xl font-bold';
+}
+</script>
+{% endblock %}
