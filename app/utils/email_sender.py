@@ -1,12 +1,7 @@
 import random
-
-def generate_code():
-    return str(random.randint(100000, 999999))
-
+def generate_code(): return str(random.randint(100000, 999999))
 def send_code(to_email, code):
     print(f"DEV CODE for {to_email}: {code}")
-    return True, f"Your code is {code} - Enter it below", code
-
+    return True, f"Your code is {code} - Enter it below (no email needed)", code
 def send_verification_email(to_email, code):
-    # auth.py needs this exact name
     return send_code(to_email, code)
